@@ -150,6 +150,7 @@ def getHoughparamsV(points, im,color_im):
     k=heapq.nlargest(len(points),points.items(),key=lambda x:x[1])
     # (row,theta)=k[1][0]
     setV=set()
+    Vpoints=[]
     im1=ImageDraw.Draw(color_im)
     im2=ImageDraw.Draw(im)
     for index,line in enumerate(k):
@@ -171,17 +172,21 @@ def getHoughparamsV(points, im,color_im):
                     linePoints.append((i,j))
             im1.line(linePoints,fill='red',width=1)
             im2.line(linePoints,fill='red',width=1)
+            Vpoints.append(round(j))
             # color_im.show()
         else:
             l=0
     color_im.save('sample.png')
     im.save('sobelsample.png')
+    Vpoints.sort()
+    return Vpoints
 
 
 def getHoughparamsH(points, im,color_im):
     k=heapq.nlargest(len(points),points.items(),key=lambda x:x[1])
     # (row,theta)=k[1][0]
     setH=set()
+    Hpoints=[]
     im1=ImageDraw.Draw(color_im)
     im2=ImageDraw.Draw(im)
     for index,line in enumerate(k):
@@ -200,11 +205,41 @@ def getHoughparamsH(points, im,color_im):
                     linePoints.append((i,j))
             im1.line(linePoints,fill='red',width=1)
             im2.line(linePoints,fill='red',width=1)
+            Hpoints.append(round(i))
             # color_im.show()
         else:
             l=0
     color_im.save('sample.png')
     im.save('sobelsample.png')
+    Hpoints.sort()
+    return Hpoints
+
+
+def getLetters(Vpoints,Hpoints,canny_im):
+    text=[]
+    canny_im.show()
+    box=Vpoints[1]-Vpoints[0]
+    for i in range(0,len(Hpoints),2):
+        for j in range(0,len(Vpoints),10):
+            if j==0:
+                left=Vpoints[j]-(box*4)
+            else:
+                left=Vpoints[j-1]+box
+            right=Vpoints[j]-2*box
+            up=Hpoints[i]
+            down=Hpoints[i+1]
+            edgepixels=0
+            for k in range(left,right+1):
+                for l in range(up,down+1):
+                    if canny_im.getpixel((k,l))==255:
+                        edgepixels+=1
+            if edgepixels >50:
+                number=((j//10)*29)+((i+2)//2)
+                text[number]=True
+                print(number," ",True)
+
+
+
 
 
 
@@ -217,7 +252,7 @@ def getHoughparamsH(points, im,color_im):
 
 if __name__ == '__main__':
     # Load an image 
-    im = Image.open('b-13.jpg')
+    im = Image.open('b-27.jpg')
     # example=Image.open('c-33.jpg')
     
     gray_im = im.convert("L")
@@ -240,8 +275,13 @@ if __name__ == '__main__':
     pointsV,pointsH=getHoughPoints(canny_im)
 
     # get Hough lines
-    getHoughparamsV( pointsV,canny_im,im)
-    getHoughparamsH( pointsH,canny_im,im)
+    Hpoints=getHoughparamsV( pointsV,canny_im,im)
+    Vpoints=getHoughparamsH( pointsH,canny_im,im)
+    getLetters(Vpoints,Hpoints,canny_im)
+
+
+
+
 
 
 
