@@ -216,7 +216,7 @@ def getHoughparamsH(points, im,color_im):
 
 
 def getLetters(Vpoints,Hpoints,canny_im):
-    text=[]
+    text={}
     canny_im.show()
     box=Vpoints[1]-Vpoints[0]
     for i in range(0,len(Hpoints),2):
@@ -237,6 +237,7 @@ def getLetters(Vpoints,Hpoints,canny_im):
                 number=((j//10)*29)+((i+2)//2)
                 text[number]=True
                 print(number," ",True)
+    return text
 
 
 
@@ -277,7 +278,9 @@ if __name__ == '__main__':
     # get Hough lines
     Hpoints=getHoughparamsV( pointsV,canny_im,im)
     Vpoints=getHoughparamsH( pointsH,canny_im,im)
-    getLetters(Vpoints,Hpoints,canny_im)
+
+    # side text ans
+    textAns=getLetters(Vpoints,Hpoints,canny_im)
 
 
 
