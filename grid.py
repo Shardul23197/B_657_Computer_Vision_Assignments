@@ -11,16 +11,18 @@ import math
 import heapq
 
 
+
+
 def sobel(gray_im):
     xkernel = np.array((
                                 (1, 0, -1),
                                 (2, 0, -2),
-                                (1,0,-1))) / 8.
+                                (1,0,-1))) /8.
 
     ykernel = np.array((
                                 (-1, -2, -1),
                                 (0, 0, 0),
-                                (1,2,1))) / 8.
+                                (1,2,1))) /8.
 
     xresult = gray_im.filter(ImageFilter.Kernel(
         size=xkernel.shape,
@@ -50,18 +52,21 @@ def sobel(gray_im):
 
 
 def cannyThreshold(im):
-    high= 120
-    low=50
+    high= 70
+    low=40
     mid=[]
-    for i in range(im.width):
-        for j in range(im.height):
+    intensity=[]
+    for i in range(160,1470):
+        for j in range(600,im.height-1):
             value=im.getpixel((i,j))
+            intensity.append(value)
             if value>=high:
                 im.putpixel((i,j),255)
             elif value<low:
                 im.putpixel((i,j),0)
             else:
                 mid.append((i,j))
+                # im.putpixel((i,j),0)
     
     for pixel in mid:
         i,j=pixel[0],pixel[1]
@@ -79,35 +84,35 @@ def nonMaximalSuppression(im,directions):
                 d=directions[i][j]
                 if 0 <= d <= 22.5:
                     # if im.getpixel((i+1,j)) >= value:
-                    # p=max(im.getpixel((i-1,j)),im.getpixel((i-2,j)),im.getpixel((i-3,j)))
-                    # n=max(im.getpixel((i+1,j)),im.getpixel((i+2,j)),im.getpixel((i+3,j)))
-                    p=im.getpixel((i-1,j))
-                    n=im.getpixel((i+1,j))
+                    p=max(im.getpixel((i-1,j)),im.getpixel((i-2,j)),im.getpixel((i-3,j)),im.getpixel((i-4,j)),im.getpixel((i-5,j)))
+                    n=max(im.getpixel((i+1,j)),im.getpixel((i+2,j)),im.getpixel((i+3,j)),im.getpixel((i+4,j)),im.getpixel((i+5,j)))
+                    # p=im.getpixel((i-1,j))
+                    # n=im.getpixel((i+1,j))
                 elif  158 <= d<= 180:
                     # if im.getpixel((i,j-1)) >=value:
-                    # p=max(im.getpixel((i,j-1)),im.getpixel((i,j-2)),im.getpixel((i,j-3)))
-                    # n=max(im.getpixel((i,j+1)),im.getpixel((i,j+2)),im.getpixel((i,j+3)))
-                    p=im.getpixel((i,j-1))
-                    n=im.getpixel((i,j+1))
+                    p=max(im.getpixel((i,j-1)),im.getpixel((i,j-2)),im.getpixel((i,j-3)),im.getpixel((i,j-4)),im.getpixel((i,j-5)))
+                    n=max(im.getpixel((i,j+1)),im.getpixel((i,j+2)),im.getpixel((i,j+3)),im.getpixel((i,j+4)),im.getpixel((i,j+5)))
+                    # p=im.getpixel((i,j-1))
+                    # n=im.getpixel((i,j+1))
 
                 elif 22.5<=d<=67.5:
-                    # p=max(im.getpixel((i+1,j-1)),im.getpixel((i+2,j-2)),im.getpixel((i+3,j-3)))
-                    # n=max(im.getpixel((i-1,j+1)),im.getpixel((i-2,j+2)),im.getpixel((i-3,j+3)))
-                    p=im.getpixel((i+1,j-1))
-                    n=im.getpixel((i-1,j+1))
+                    p=max(im.getpixel((i+1,j-1)),im.getpixel((i+2,j-2)),im.getpixel((i+3,j-3)),im.getpixel((i+4,j-4)),im.getpixel((i+5,j-5)))
+                    n=max(im.getpixel((i-1,j+1)),im.getpixel((i-2,j+2)),im.getpixel((i-3,j+3)),im.getpixel((i-4,j+4)),im.getpixel((i-5,j+5)))
+                    # p=im.getpixel((i+1,j-1))
+                    # n=im.getpixel((i-1,j+1))
                 elif 67.5<= d<= 112.5:
-                    # p=max(im.getpixel((i,j+1)),im.getpixel((i,j+2)),im.getpixel((i,j+3)))
-                    # n=max(im.getpixel((i,j-1)),im.getpixel((i,j-2)),im.getpixel((i,j-3)))
-                    p=im.getpixel((i,j+1))
-                    n=im.getpixel((i,j-1))
+                    p=max(im.getpixel((i,j+1)),im.getpixel((i,j+2)),im.getpixel((i,j+3)),im.getpixel((i,j+4)),im.getpixel((i,j+5)))
+                    n=max(im.getpixel((i,j-1)),im.getpixel((i,j-2)),im.getpixel((i,j-3)),im.getpixel((i,j-4)),im.getpixel((i,j-5)))
+                    # p=im.getpixel((i,j+1))
+                    # n=im.getpixel((i,j-1))
                 elif 112.5<=d<=157.5:
-                    # p=max(im.getpixel((i-1,j-1)),im.getpixel((i-2,j-2)),im.getpixel((i-3,j-3)))
-                    # n=max(im.getpixel((i+1,j+1)),im.getpixel((i+2,j+2)),im.getpixel((i+3,j+3)))
-                    p=im.getpixel((i-1,j-1))
-                    n=im.getpixel((i+1,j+1))
+                    p=max(im.getpixel((i-1,j-1)),im.getpixel((i-2,j-2)),im.getpixel((i-3,j-3)),im.getpixel((i-4,j-4)),im.getpixel((i-5,j-5)))
+                    n=max(im.getpixel((i+1,j+1)),im.getpixel((i+2,j+2)),im.getpixel((i+3,j+3)),im.getpixel((i+4,j+4)),im.getpixel((i+5,j+5)))
+                    # p=im.getpixel((i-1,j-1))
+                    # n=im.getpixel((i+1,j+1))
                 else:
                     k=0
-                if not (im.getpixel((i,j))>p and im.getpixel((i,j))>n):
+                if not (im.getpixel((i,j))>=p and im.getpixel((i,j))>=n):
                     im.putpixel((i,j),0)
                     
     im.save("nonMax.png")
@@ -131,54 +136,73 @@ def getHoughPoints(im):
             if im.getpixel((i,j))>0:
                 for theta in thetas:
                     row=(-1*(i)*np.cos(theta))+(j*np.sin(theta))
-                    k=(round(row),theta)
+                    row=round(row)
+                    k=(row,theta)
                     if theta!=0:
-                        pointsV[k]=pointsV.get(k,0)+1
+                        pointsV[k]=pointsV.get(k,0)+1      
                     else:
                         pointsH[k]=pointsH.get(k,0)+1
+                            
     return pointsV,pointsH
 
 
 def getHoughparamsV(points, im,color_im):
-    k=heapq.nlargest(56,points.items(),key=lambda x:x[1])
+    k=heapq.nlargest(len(points),points.items(),key=lambda x:x[1])
     # (row,theta)=k[1][0]
+    setV=set()
     im1=ImageDraw.Draw(color_im)
     im2=ImageDraw.Draw(im)
-    for k,line in enumerate(k):
+    for index,line in enumerate(k):
         (row,theta)=line[0]
         linePoints=[]
-        for i in range(160,1470):
-            j=(row+(i*np.cos(theta)))/np.sin(theta)
-            # if j==float('-inf'):
-            #     j=0
+        if len(setV)>=58:
+            break;
+        neigh={row+i for i in range(-12,13)}
+        neigh.remove(row)
+        # l=0
+        if not neigh.intersection(setV):
+            setV.add(row)
+            for i in range(160,1470):
+                j=(row+(i*np.cos(theta)))/np.sin(theta)
+                # if j==float('-inf'):
+                #     j=0
 
-            if j<im.height and j>=0:
-                linePoints.append((i,j))
-        im1.line(linePoints,fill='red',width=1)
-        im2.line(linePoints,fill='red',width=1)
-        # color_im.show()
+                if j<im.height and j>=0:
+                    linePoints.append((i,j))
+            im1.line(linePoints,fill='red',width=1)
+            im2.line(linePoints,fill='red',width=1)
+            # color_im.show()
+        else:
+            l=0
     color_im.save('sample.png')
     im.save('sobelsample.png')
 
 
 def getHoughparamsH(points, im,color_im):
-    k=heapq.nlargest(30,points.items(),key=lambda x:x[1])
+    k=heapq.nlargest(len(points),points.items(),key=lambda x:x[1])
     # (row,theta)=k[1][0]
+    setH=set()
     im1=ImageDraw.Draw(color_im)
     im2=ImageDraw.Draw(im)
-    for k,line in enumerate(k):
+    for index,line in enumerate(k):
         (row,theta)=line[0]
         linePoints=[]
-        for j in range(600,im.height):
-            i=((j*np.sin(theta))-row)/np.cos(theta)
-            # if i==float('-inf'):
-            #     j=0
+        if len(setH)>=30:
+            break;
+        if not {row-5,row-4,row-3,row-2,row-1,row+1,row+2,row+3,row+4,row+5}.intersection(setH):
+            setH.add(row)
+            for j in range(600,im.height):
+                i=((j*np.sin(theta))-row)/np.cos(theta)
+                # if i==float('-inf'):
+                #     j=0
 
-            if 160<=i<=1470:
-                linePoints.append((i,j))
-        im1.line(linePoints,fill='red',width=1)
-        im2.line(linePoints,fill='red',width=1)
-        # color_im.show()
+                if 160<=i<=1470:
+                    linePoints.append((i,j))
+            im1.line(linePoints,fill='red',width=1)
+            im2.line(linePoints,fill='red',width=1)
+            # color_im.show()
+        else:
+            l=0
     color_im.save('sample.png')
     im.save('sobelsample.png')
 
@@ -193,10 +217,11 @@ def getHoughparamsH(points, im,color_im):
 
 if __name__ == '__main__':
     # Load an image 
-    im = Image.open('blank_form.jpg')
+    im = Image.open('b-13.jpg')
     # example=Image.open('c-33.jpg')
     
     gray_im = im.convert("L")
+    gray_im = gray_im.filter(ImageFilter.GaussianBlur(radius = 0.4))
     gray_im.show()
    
     # sobel edge detection
