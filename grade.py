@@ -259,8 +259,6 @@ def getHoughparamsV(points, im,color_im):
             im2.line(linePoints,fill='red',width=1)
             Vpoints.append(int(round(j)))
             # color_im.show()
-        else:
-            l=0
     # color_im.save('sample.png')
     # color_im.show()
     # im.save('sobelsample.png')
@@ -310,10 +308,8 @@ def getHoughparamsH(points, im,color_im):
                     linePoints.append((i,j))
             im1.line(linePoints,fill='red',width=1)
             im2.line(linePoints,fill='red',width=1)
-            Hpoints.append(round(i))
+            Hpoints.append(int(round(i)))
             # color_im.show()
-        else:
-            l=0
     # color_im.save('sample.png')
     # color_im.show()
     # im.save('sobelsample.png')
