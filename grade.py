@@ -1,16 +1,16 @@
 #Import the Image and ImageFilter classes from PIL (Pillow)
-from turtle import width
+# from turtle import width
 from PIL import Image
 from PIL import ImageFilter
 from PIL import ImageDraw
 import sys
 import random
-from matplotlib.pyplot import fill
+# from matplotlib.pyplot import fill
 import numpy as np
 import math
 import heapq
-from sklearn.cluster import MeanShift 
-from matplotlib import pyplot as plt
+# from sklearn.cluster import MeanShift 
+# from matplotlib import pyplot as plt
 
 
 
@@ -32,14 +32,14 @@ def sobel(gray_im):
         scale=1
         ))
     # xresult.show()
-    xresult.save('xkernel.png')
+    # xresult.save('xkernel.png')
     yresult = gray_im.filter(ImageFilter.Kernel(
         size=ykernel.shape,
         kernel=ykernel.flatten(),
         scale=1
         ))
     # yresult.show()
-    yresult.save('ykernel.png')
+    # yresult.save('ykernel.png')
     result = Image.new(mode="L", size=(xresult.width, xresult.height))
     direction=[[0 for i in range(xresult.height)] for j in range(xresult.width)]
     for i in range(xresult.width):
@@ -115,8 +115,8 @@ def cannyThreshold_axis(imx,imy):
             imy.putpixel((i,j),255)
         else:
             imy.putpixel((i,j),0)
-    imx.save("canny_imx.png")
-    imy.save("canny_imy.png")
+    # imx.save("canny_imx.png")
+    # imy.save("canny_imy.png")
     return imx,imy
 
 # def nonMaximalSuppression(im,directions):
@@ -171,8 +171,8 @@ def nonMaximalSuppression_axis(imy,imx):
                 
                 if not (imy.getpixel((i,j))>=p and imy.getpixel((i,j))>=n):
                     imy.putpixel((i,j),0)       
-    imx.save("nonMax_xresult.png")
-    imy.save("nonMax_yresult.png")
+    # imx.save("nonMax_xresult.png")
+    # imy.save("nonMax_yresult.png")
     return imx,imy
     
 
@@ -261,9 +261,9 @@ def getHoughparamsV(points, im,color_im):
             # color_im.show()
         else:
             l=0
-    color_im.save('sample.png')
-    color_im.show()
-    im.save('sobelsample.png')
+    # color_im.save('sample.png')
+    # color_im.show()
+    # im.save('sobelsample.png')
     Vpoints.sort()
     return Vpoints
 
@@ -314,9 +314,9 @@ def getHoughparamsH(points, im,color_im):
             # color_im.show()
         else:
             l=0
-    color_im.save('sample.png')
-    color_im.show()
-    im.save('sobelsample.png')
+    # color_im.save('sample.png')
+    # color_im.show()
+    # im.save('sobelsample.png')
     Hpoints.sort()
     return Hpoints
 
@@ -458,8 +458,9 @@ def getAns(Vpoints,Hpoints,gray_im,canny_im):
 
 
 
-def printAns(ans,text):   
-    f=open('demo.txt','w+')
+def printAns(ans,text,file):   
+    # f=open('demo.txt','w+')
+    f=open(file,'w+')
     for i in range(1,86):
         s=str(i)+" "+"".join(ans[i])
         if i in text:
@@ -477,7 +478,7 @@ def getHouhpoints(im):
    
     # sobel edge detection
     xresult,yresult,sobel_im,directions=sobel(gray_im)
-    sobel_im.save('sobel_im.png')
+    # sobel_im.save('sobel_im.png')
 
     
     # canny_im=nonMaximalSuppression(sobel_im,directions)
@@ -495,7 +496,7 @@ def getHouhpoints(im):
     Vpoints=getHoughparamsH( pointsH,canny_yresult,im)
     return Hpoints,Vpoints
 
-def getStudentAns(im):
+def getStudentAns(im,file):
     gray_im_p = im.convert("L")
     # gray_im_p.show()
     gray_im = gray_im_p.filter(ImageFilter.GaussianBlur(radius = 0.3))
@@ -503,7 +504,7 @@ def getStudentAns(im):
    
     # sobel edge detection
     xresult,yresult,sobel_im,directions=sobel(gray_im)
-    sobel_im.save('sobel_im.png')
+    # sobel_im.save('sobel_im.png')
 
     
     # canny_im=nonMaximalSuppression(sobel_im,directions)
@@ -523,12 +524,26 @@ def getStudentAns(im):
     # side text ans
     # textAns=getLetters(Vpoints,Hpoints,sobel_im)
     ans,text=getAns(Vpoints,Hpoints,gray_im_p,sobel_im)
-    printAns(ans,text)
+    printAns(ans,text,file)
     return ans,text
 
 if __name__ == '__main__':
     # Load an image 
-    im = Image.open('./test-images/c-33.jpg')
+    # im = Image.open('./test-images/c-33.jpg')
+    im = Image.open(sys.argv[1])
+    output=sys.argv[2]
+
+    ans,text=getStudentAns(im,output)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     # example=Image.open('c-33.jpg')
     
     # gray_im_p = im.convert("L")
@@ -561,8 +576,8 @@ if __name__ == '__main__':
     # printAns(ans,text)
 
 
-    ans,text=getStudentAns(im)
-    k=0
+    # ans,text=getStudentAns(im)
+    # k=0
 
 
 
