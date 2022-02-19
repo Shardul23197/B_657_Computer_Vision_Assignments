@@ -502,31 +502,28 @@ def printAns(ans,text,file):
         
 
 
-# def getHouhpoints(im):
-#     gray_im_p = im.convert("L")
-#     # gray_im_p.show()
-#     gray_im = gray_im_p.filter(ImageFilter.GaussianBlur(radius = 0.3))
-#     # gray_im.show()
+def getHoughpoints(im):
+    gray_im_p = im.convert("L")
+    # gray_im_p.show()
+    gray_im = gray_im_p.filter(ImageFilter.GaussianBlur(radius = 0.3))
+    # gray_im.show()
    
-#     # sobel edge detection
-#     xresult,yresult,sobel_im,directions=sobel(gray_im)
-#     # sobel_im.save('sobel_im.png')
+    # sobel edge detection
+    xresult,yresult,sobel_im,directions=sobel(gray_im)
+    # sobel_im.save('sobel_im.png')
 
-    
-#     # canny_im=nonMaximalSuppression(sobel_im,directions)
-#     canny_xresult,canny_yresult,canny_im=nonMaximalSuppression_axis(xresult,yresult,sobel_im)
-#     # canny_im=cannyThreshold(canny_im)
-#     canny_xresult,canny_yresult=cannyThreshold_axis(canny_xresult,canny_yresult)
-#     # canny_im.save('canny_im.png')
+    # nonmaximum suppression
+    canny_xresult,canny_yresult,canny_im=nonMaximalSuppression_axis(xresult,yresult,sobel_im,directions)
+    # canny theshold
+    canny_xresult,canny_yresult,canny_im=cannyThreshold_axis(canny_xresult,canny_yresult,canny_im)
 
-#     # get Hough points
-#     # pointsV,pointsH=getHoughPoints(canny_im)
-#     pointsV,pointsH=getHoughPoints_axis(canny_xresult,canny_yresult)
-#     # get Hough lines
-#     # Hpoints=getHoughparamsV( pointsV,canny_im,im)
-#     Hpoints=getHoughparamsV( pointsV,canny_xresult,im)
-#     Vpoints=getHoughparamsH( pointsH,canny_yresult,im)
-#     return Hpoints,Vpoints
+    # get Hough points
+    pointsV,pointsH=getHoughPoints_axis(canny_xresult,canny_yresult)
+
+    # get Hough lines
+    Hpoints=getHoughparamsV( pointsV,canny_xresult,im)
+    Vpoints=getHoughparamsH( pointsH,canny_yresult,im)
+    return Hpoints,Vpoints
 
 def getStudentAns(im,file):
     gray_im_p = im.convert("L")
