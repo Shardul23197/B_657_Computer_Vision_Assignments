@@ -257,7 +257,7 @@ def getHoughparamsV(points, im,color_im):
                     linePoints.append((i,j))
             im1.line(linePoints,fill='red',width=1)
             im2.line(linePoints,fill='red',width=1)
-            Vpoints.append(round(j))
+            Vpoints.append(int(round(j)))
             # color_im.show()
         else:
             l=0
@@ -532,7 +532,7 @@ if __name__ == '__main__':
     # im = Image.open('./test-images/c-33.jpg')
     im = Image.open(sys.argv[1])
     output=sys.argv[2]
-
+    # output="output.txt"
     ans,text=getStudentAns(im,output)
     
     
