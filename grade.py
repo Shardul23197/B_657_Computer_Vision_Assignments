@@ -31,15 +31,11 @@ def sobel(gray_im):
         kernel=xkernel.flatten(),
         scale=1
         ))
-    # xresult.show()
-    # xresult.save('xkernel.png')
     yresult = gray_im.filter(ImageFilter.Kernel(
         size=ykernel.shape,
         kernel=ykernel.flatten(),
         scale=1
         ))
-    # yresult.show()
-    # yresult.save('ykernel.png')
     result = Image.new(mode="L", size=(xresult.width, xresult.height))
     direction=[[0 for i in range(xresult.height)] for j in range(xresult.width)]
     for i in range(xresult.width):
@@ -48,8 +44,6 @@ def sobel(gray_im):
             direction[i][j]=np.arctan2(yresult.getpixel((i,j)),xresult.getpixel((i,j)))*180/np.pi
             result.putpixel((i,j),round(value))
             
-    # xresult.show()
-    # xresult.save("sobel_edge.png")
     return xresult,yresult,result,direction
 
 
@@ -80,11 +74,12 @@ def sobel(gray_im):
 #     return im
 
 
-def cannyThreshold_axis(imx,imy):
+def cannyThreshold_axis(imx,imy,canny_im):
     high= 70
     low=40
     midx=[]
     midy=[]
+    mid=[]
     for i in range(160,1470):
         for j in range(670,imx.height-1):
             value=imx.getpixel((i,j))
@@ -102,6 +97,14 @@ def cannyThreshold_axis(imx,imy):
                 imy.putpixel((i,j),0)
             else:
                 midy.append((i,j))
+            
+            value=canny_im.getpixel((i,j))
+            if value>=high:
+                canny_im.putpixel((i,j),255)
+            elif value<low:
+                canny_im.putpixel((i,j),0)
+            else:
+                mid.append((i,j))
     
     for pixel in midx:
         i,j=pixel[0],pixel[1]
@@ -115,9 +118,17 @@ def cannyThreshold_axis(imx,imy):
             imy.putpixel((i,j),255)
         else:
             imy.putpixel((i,j),0)
+    
+    for pixel in mid:
+        i,j=pixel[0],pixel[1]
+        if canny_im.getpixel((i-1,j)) ==255 or canny_im.getpixel((i+1,j)) ==255 or canny_im.getpixel((i,j-1)) ==255 or canny_im.getpixel((i,j+1)) ==255:
+            canny_im.putpixel((i,j),255)
+        else:
+            canny_im.putpixel((i,j),0)
     # imx.save("canny_imx.png")
     # imy.save("canny_imy.png")
-    return imx,imy
+    # canny_im.save("canny_im.png")
+    return imx,imy,canny_im
 
 # def nonMaximalSuppression(im,directions):
 #     for i in range(160,1470):
@@ -151,7 +162,7 @@ def cannyThreshold_axis(imx,imy):
 #     return im
 
 
-def nonMaximalSuppression_axis(imy,imx):
+def nonMaximalSuppression_axis(imy,imx,sobel_im,directions):
     for i in range(160,1470):
         for j in range(670,imx.height-1  ):
             # xvalue
@@ -170,10 +181,35 @@ def nonMaximalSuppression_axis(imy,imx):
                 n=max(imy.getpixel((i+1,j)),imy.getpixel((i+2,j)),imy.getpixel((i+3,j)),imy.getpixel((i+4,j)),imy.getpixel((i+5,j)))
                 
                 if not (imy.getpixel((i,j))>=p and imy.getpixel((i,j))>=n):
-                    imy.putpixel((i,j),0)       
+                    imy.putpixel((i,j),0) 
+            
+            # sobel_im
+            value=sobel_im.getpixel((i,j))
+            if value >0:
+                d=directions[i][j]
+                if 0 <= d <= 22.5:
+                    p=max(sobel_im.getpixel((i-1,j)),sobel_im.getpixel((i-2,j)),sobel_im.getpixel((i-3,j)),sobel_im.getpixel((i-4,j)),sobel_im.getpixel((i-5,j)))
+                    n=max(sobel_im.getpixel((i+1,j)),sobel_im.getpixel((i+2,j)),sobel_im.getpixel((i+3,j)),sobel_im.getpixel((i+4,j)),sobel_im.getpixel((i+5,j)))
+                elif  158 <= d<= 180:
+                    p=max(sobel_im.getpixel((i,j-1)),sobel_im.getpixel((i,j-2)),sobel_im.getpixel((i,j-3)),sobel_im.getpixel((i,j-4)),sobel_im.getpixel((i,j-5)))
+                    n=max(sobel_im.getpixel((i,j+1)),sobel_im.getpixel((i,j+2)),sobel_im.getpixel((i,j+3)),sobel_im.getpixel((i,j+4)),sobel_im.getpixel((i,j+5)))
+
+                elif 22.5<=d<=67.5:
+                    p=max(sobel_im.getpixel((i+1,j-1)),sobel_im.getpixel((i+2,j-2)),sobel_im.getpixel((i+3,j-3)),sobel_im.getpixel((i+4,j-4)),sobel_im.getpixel((i+5,j-5)))
+                    n=max(sobel_im.getpixel((i-1,j+1)),sobel_im.getpixel((i-2,j+2)),sobel_im.getpixel((i-3,j+3)),sobel_im.getpixel((i-4,j+4)),sobel_im.getpixel((i-5,j+5)))
+                elif 67.5<= d<= 112.5:
+                    p=max(sobel_im.getpixel((i,j+1)),sobel_im.getpixel((i,j+2)),sobel_im.getpixel((i,j+3)),sobel_im.getpixel((i,j+4)),sobel_im.getpixel((i,j+5)))
+                    n=max(sobel_im.getpixel((i,j-1)),sobel_im.getpixel((i,j-2)),sobel_im.getpixel((i,j-3)),sobel_im.getpixel((i,j-4)),sobel_im.getpixel((i,j-5)))
+                elif 112.5<=d<=157.5:
+                    p=max(sobel_im.getpixel((i-1,j-1)),sobel_im.getpixel((i-2,j-2)),sobel_im.getpixel((i-3,j-3)),sobel_im.getpixel((i-4,j-4)),sobel_im.getpixel((i-5,j-5)))
+                    n=max(sobel_im.getpixel((i+1,j+1)),sobel_im.getpixel((i+2,j+2)),sobel_im.getpixel((i+3,j+3)),sobel_im.getpixel((i+4,j+4)),sobel_im.getpixel((i+5,j+5)))
+                if not (sobel_im.getpixel((i,j))>=p and sobel_im.getpixel((i,j))>=n):
+                    sobel_im.putpixel((i,j),0)
+                  
     # imx.save("nonMax_xresult.png")
     # imy.save("nonMax_yresult.png")
-    return imx,imy
+    # sobel_im.save("non_max.png")
+    return imx,imy,sobel_im
     
 
 
@@ -184,14 +220,8 @@ def getHoughPoints_axis(imx,imy):
     pointsV={}
     pointsH={}
     for i in range(160,1470):
-    # for i in range(160,300):
         for j in range(670,imx.height-1):
-        # for j in range(600,900):
-            # if im.getpixel((i,j))>0:
             for theta in thetas:
-                # row=(-1*(i)*np.cos(theta))+(j*np.sin(theta))
-                # row=round(row)
-                # k=(row,theta)
                 if theta!=0:
                     # imx.show()
                     if imx.getpixel((i,j))>0:
@@ -233,7 +263,6 @@ def getHoughPoints_axis(imx,imy):
 
 def getHoughparamsV(points, im,color_im):
     k=heapq.nlargest(len(points),points.items(),key=lambda x:x[1])
-    # (row,theta)=k[1][0]
     setV=set()
     Vpoints=[]
     im1=ImageDraw.Draw(color_im)
@@ -259,6 +288,8 @@ def getHoughparamsV(points, im,color_im):
             im2.line(linePoints,fill='red',width=1)
             Vpoints.append(int(round(j)))
             # color_im.show()
+        # else:
+        #     l=0
     # color_im.save('sample.png')
     # color_im.show()
     # im.save('sobelsample.png')
@@ -359,12 +390,16 @@ def getHoughparamsH(points, im,color_im):
 
 
 
-def getLetters(Vpoints,Hpoints,i,j,canny_im,box):
+def getLetters(Vpoints,Hpoints,i,j,canny_im,box,number):
+    
     if j==0:
         left=Vpoints[j]-(box*4)
     else:
-        left=Vpoints[j-1]+box
-    right=Vpoints[j]-2*box
+        left=Vpoints[j-1]+(int(1.5*box))
+    if number>=10:
+        right=Vpoints[j]-2*box
+    else:
+        right=Vpoints[j]-(int(1.5*box))
     up=Hpoints[i]
     down=Hpoints[i+1]
     edgepixels=0
@@ -431,13 +466,14 @@ def getLetters(Vpoints,Hpoints,i,j,canny_im,box):
 
 def getAns(Vpoints,Hpoints,gray_im,canny_im):
     ans={}
+    # canny_im.show()
     options={0:'A',1:'B',2:'C',3:'D',4:'E'}
     box=Vpoints[1]-Vpoints[0]
     text={}
     for i in range(0,len(Hpoints),2):
         for j in range(0,len(Vpoints),10):
             number=((j//10)*29)+((i+2)//2)
-            if getLetters(Vpoints,Hpoints,i,j,canny_im,box):
+            if getLetters(Vpoints,Hpoints,i,j,canny_im,box,number):
                 text[number]='x'
             ans[number]=list()
             for k in range(j,j+10,2):
@@ -466,31 +502,31 @@ def printAns(ans,text,file):
         
 
 
-def getHouhpoints(im):
-    gray_im_p = im.convert("L")
-    # gray_im_p.show()
-    gray_im = gray_im_p.filter(ImageFilter.GaussianBlur(radius = 0.3))
-    # gray_im.show()
+# def getHouhpoints(im):
+#     gray_im_p = im.convert("L")
+#     # gray_im_p.show()
+#     gray_im = gray_im_p.filter(ImageFilter.GaussianBlur(radius = 0.3))
+#     # gray_im.show()
    
-    # sobel edge detection
-    xresult,yresult,sobel_im,directions=sobel(gray_im)
-    # sobel_im.save('sobel_im.png')
+#     # sobel edge detection
+#     xresult,yresult,sobel_im,directions=sobel(gray_im)
+#     # sobel_im.save('sobel_im.png')
 
     
-    # canny_im=nonMaximalSuppression(sobel_im,directions)
-    canny_xresult,canny_yresult=nonMaximalSuppression_axis(xresult,yresult)
-    # canny_im=cannyThreshold(canny_im)
-    canny_xresult,canny_yresult=cannyThreshold_axis(canny_xresult,canny_yresult)
-    # canny_im.save('canny_im.png')
+#     # canny_im=nonMaximalSuppression(sobel_im,directions)
+#     canny_xresult,canny_yresult,canny_im=nonMaximalSuppression_axis(xresult,yresult,sobel_im)
+#     # canny_im=cannyThreshold(canny_im)
+#     canny_xresult,canny_yresult=cannyThreshold_axis(canny_xresult,canny_yresult)
+#     # canny_im.save('canny_im.png')
 
-    # get Hough points
-    # pointsV,pointsH=getHoughPoints(canny_im)
-    pointsV,pointsH=getHoughPoints_axis(canny_xresult,canny_yresult)
-    # get Hough lines
-    # Hpoints=getHoughparamsV( pointsV,canny_im,im)
-    Hpoints=getHoughparamsV( pointsV,canny_xresult,im)
-    Vpoints=getHoughparamsH( pointsH,canny_yresult,im)
-    return Hpoints,Vpoints
+#     # get Hough points
+#     # pointsV,pointsH=getHoughPoints(canny_im)
+#     pointsV,pointsH=getHoughPoints_axis(canny_xresult,canny_yresult)
+#     # get Hough lines
+#     # Hpoints=getHoughparamsV( pointsV,canny_im,im)
+#     Hpoints=getHoughparamsV( pointsV,canny_xresult,im)
+#     Vpoints=getHoughparamsH( pointsH,canny_yresult,im)
+#     return Hpoints,Vpoints
 
 def getStudentAns(im,file):
     gray_im_p = im.convert("L")
@@ -502,24 +538,20 @@ def getStudentAns(im,file):
     xresult,yresult,sobel_im,directions=sobel(gray_im)
     # sobel_im.save('sobel_im.png')
 
-    
-    # canny_im=nonMaximalSuppression(sobel_im,directions)
-    canny_xresult,canny_yresult=nonMaximalSuppression_axis(xresult,yresult)
-    # canny_im=cannyThreshold(canny_im)
-    canny_xresult,canny_yresult=cannyThreshold_axis(canny_xresult,canny_yresult)
-    # canny_im.save('canny_im.png')
+    # nonmaximum suppression
+    canny_xresult,canny_yresult,canny_im=nonMaximalSuppression_axis(xresult,yresult,sobel_im,directions)
+    # canny theshold
+    canny_xresult,canny_yresult,canny_im=cannyThreshold_axis(canny_xresult,canny_yresult,canny_im)
 
     # get Hough points
-    # pointsV,pointsH=getHoughPoints(canny_im)
     pointsV,pointsH=getHoughPoints_axis(canny_xresult,canny_yresult)
+
     # get Hough lines
-    # Hpoints=getHoughparamsV( pointsV,canny_im,im)
     Hpoints=getHoughparamsV( pointsV,canny_xresult,im)
     Vpoints=getHoughparamsH( pointsH,canny_yresult,im)
 
     # side text ans
-    # textAns=getLetters(Vpoints,Hpoints,sobel_im)
-    ans,text=getAns(Vpoints,Hpoints,gray_im_p,sobel_im)
+    ans,text=getAns(Vpoints,Hpoints,gray_im_p,canny_im)
     printAns(ans,text,file)
     return ans,text
 
@@ -538,42 +570,7 @@ if __name__ == '__main__':
     
     
     
-    
-    
-    # example=Image.open('c-33.jpg')
-    
-    # gray_im_p = im.convert("L")
-    # # gray_im_p.show()
-    # gray_im = gray_im_p.filter(ImageFilter.GaussianBlur(radius = 0.3))
-    # # gray_im.show()
-   
-    # # sobel edge detection
-    # xresult,yresult,sobel_im,directions=sobel(gray_im)
-    # sobel_im.save('sobel_im.png')
 
-    
-    # # canny_im=nonMaximalSuppression(sobel_im,directions)
-    # canny_xresult,canny_yresult=nonMaximalSuppression_axis(xresult,yresult)
-    # # canny_im=cannyThreshold(canny_im)
-    # canny_xresult,canny_yresult=cannyThreshold_axis(canny_xresult,canny_yresult)
-    # # canny_im.save('canny_im.png')
-
-    # # get Hough points
-    # # pointsV,pointsH=getHoughPoints(canny_im)
-    # pointsV,pointsH=getHoughPoints_axis(canny_xresult,canny_yresult)
-    # # get Hough lines
-    # # Hpoints=getHoughparamsV( pointsV,canny_im,im)
-    # Hpoints=getHoughparamsV( pointsV,canny_xresult,im)
-    # Vpoints=getHoughparamsH( pointsH,canny_yresult,im)
-
-    # # side text ans
-    # # textAns=getLetters(Vpoints,Hpoints,sobel_im)
-    # ans,text=getAns(Vpoints,Hpoints,gray_im_p,sobel_im)
-    # printAns(ans,text)
-
-
-    # ans,text=getStudentAns(im)
-    # k=0
 
 
 
