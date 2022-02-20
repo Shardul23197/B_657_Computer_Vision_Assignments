@@ -23,14 +23,16 @@ def inject(blanktext_name,answerstext_name,injectedimg_name):
 
     im = Image.open(blanktext_name)
 
+    im = im.convert("RGB")
+
     Hpoints,Vpoints = getHoughpoints(im)
     # print("Hpoints : ",Hpoints)
     # print("Vpoints : ",Vpoints)
     
 
-    #print("Image is %s pixels wide." % im.width)
-    #print("Image is %s pixels high." % im.height)
-    #print("Image mode is %s." % im.mode)
+    # print("Image is %s pixels wide." % im.width)
+    # print("Image is %s pixels high." % im.height)
+    # print("Image mode is %s." % im.mode)
 
     '''for x in range(250,1400):
         abc = [350,450,550]

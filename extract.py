@@ -145,7 +145,20 @@ def extract(injected_img,opt_text):
             op[x1].append('E')
         
     #print("op : ",op)
-    return op
+    lines = []
+    for i in op.keys():
+        i1 = ''
+        for j in op[i]:
+            i1 = i1 + j
+        abd = str(i) + ' ' + i1
+        lines.append(abd)
+    # print("lines : ",lines)
+    with open(sys.argv[2],'w') as f:
+        for k in lines:
+            f.write(k)
+            f.write('\n')
+    f.close()
 
-output = extract(sys.argv[1],sys.argv[2])
-print("output : ",output)
+    
+
+extract(sys.argv[1],sys.argv[2])
