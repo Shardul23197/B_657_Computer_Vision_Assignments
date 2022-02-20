@@ -6,6 +6,7 @@ from grade import *
 def extract(injected_img,opt_text):
 
     im = Image.open('injected.jpg')
+    im = im.convert("RGB")
     Hpoints,Vpoints = getHoughpoints(im)
 
     #im.show()
