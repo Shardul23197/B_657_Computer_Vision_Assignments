@@ -32,7 +32,7 @@ def extract(injected_img,opt_text):
                 px = im.getpixel((x2,x3))
                 p = p + px[0] + px[1] + px[2]
         # print("pa : ",p)
-        if p < 200000:
+        if p < 150000:
             op[x1].append('A')
         st = en
         en = st + 5
@@ -44,7 +44,7 @@ def extract(injected_img,opt_text):
                 px = im.getpixel((x2,x3))
                 p = p + px[0] + px[1] + px[2]
         # print("pb : ",p)
-        if p < 200000:
+        if p < 150000:
             op[x1].append('B')
         st = en
         en = st + 5
@@ -56,7 +56,7 @@ def extract(injected_img,opt_text):
                 px = im.getpixel((x2,x3))
                 p = p + px[0] + px[1] + px[2]
         # print("pc : ",p)
-        if p < 200000:
+        if p < 150000:
             op[x1].append('C')
         st = en
         en = st + 5
@@ -68,7 +68,7 @@ def extract(injected_img,opt_text):
                 px = im.getpixel((x2,x3))
                 p = p + px[0] + px[1] + px[2]
         # print("pd : ",p)
-        if p < 200000:
+        if p < 150000:
             op[x1].append('D')
         st = en
         en = st + 5
@@ -80,7 +80,7 @@ def extract(injected_img,opt_text):
                 px = im.getpixel((x2,x3))
                 p = p + px[0] + px[1] + px[2]
         # print("pe : ",p)
-        if p < 200000:
+        if p < 150000:
             op[x1].append('E')
 
     for x1 in range(47,86):
@@ -94,7 +94,7 @@ def extract(injected_img,opt_text):
                 px = im.getpixel((x2,x3))
                 p = p + px[0] + px[1] + px[2]
         # print("pa : ",p)
-        if p < 200000:
+        if p < 150000:
             op[x1].append('A')
         st = en
         en = st + 5
@@ -106,7 +106,7 @@ def extract(injected_img,opt_text):
                 px = im.getpixel((x2,x3))
                 p = p + px[0] + px[1] + px[2]
         # print("pb : ",p)
-        if p < 200000:
+        if p < 150000:
             op[x1].append('B')
         st = en
         en = st + 5
@@ -118,7 +118,7 @@ def extract(injected_img,opt_text):
                 px = im.getpixel((x2,x3))
                 p = p + px[0] + px[1] + px[2]
         # print("pc : ",p)
-        if p < 200000:
+        if p < 150000:
             op[x1].append('C')
         st = en
         en = st + 5
@@ -130,7 +130,7 @@ def extract(injected_img,opt_text):
                 px = im.getpixel((x2,x3))
                 p = p + px[0] + px[1] + px[2]
         # print("pd : ",p)
-        if p < 200000:
+        if p < 150000:
             op[x1].append('D')
         st = en
         en = st + 5
@@ -142,7 +142,7 @@ def extract(injected_img,opt_text):
                 px = im.getpixel((x2,x3))
                 p = p + px[0] + px[1] + px[2]
         # print("pe : ",p)
-        if p < 200000:
+        if p < 150000:
             op[x1].append('E')
         
     #print("op : ",op)
