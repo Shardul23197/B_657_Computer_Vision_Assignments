@@ -192,20 +192,21 @@ def nonMaximalSuppression_axis(imy,imx,sobel_im,directions):
             value=sobel_im.getpixel((i,j))
             if value >0:
                 d=directions[i][j]
-                if 0 <= d <= 22.5:
+                # I took this if else condition idea from  https://towardsdatascience.com/canny-edge-detection-step-by-step-in-python-computer-vision-b49c3a2d8123 
+                if 0 <= d <= 25:
                     p=max(sobel_im.getpixel((i-1,j)),sobel_im.getpixel((i-2,j)),sobel_im.getpixel((i-3,j)),sobel_im.getpixel((i-4,j)),sobel_im.getpixel((i-5,j)))
                     n=max(sobel_im.getpixel((i+1,j)),sobel_im.getpixel((i+2,j)),sobel_im.getpixel((i+3,j)),sobel_im.getpixel((i+4,j)),sobel_im.getpixel((i+5,j)))
                 elif  158 <= d<= 180:
                     p=max(sobel_im.getpixel((i,j-1)),sobel_im.getpixel((i,j-2)),sobel_im.getpixel((i,j-3)),sobel_im.getpixel((i,j-4)),sobel_im.getpixel((i,j-5)))
                     n=max(sobel_im.getpixel((i,j+1)),sobel_im.getpixel((i,j+2)),sobel_im.getpixel((i,j+3)),sobel_im.getpixel((i,j+4)),sobel_im.getpixel((i,j+5)))
 
-                elif 22.5<=d<=67.5:
+                elif 25<=d<=70:
                     p=max(sobel_im.getpixel((i+1,j-1)),sobel_im.getpixel((i+2,j-2)),sobel_im.getpixel((i+3,j-3)),sobel_im.getpixel((i+4,j-4)),sobel_im.getpixel((i+5,j-5)))
                     n=max(sobel_im.getpixel((i-1,j+1)),sobel_im.getpixel((i-2,j+2)),sobel_im.getpixel((i-3,j+3)),sobel_im.getpixel((i-4,j+4)),sobel_im.getpixel((i-5,j+5)))
-                elif 67.5<= d<= 112.5:
+                elif 70<= d<= 120:
                     p=max(sobel_im.getpixel((i,j+1)),sobel_im.getpixel((i,j+2)),sobel_im.getpixel((i,j+3)),sobel_im.getpixel((i,j+4)),sobel_im.getpixel((i,j+5)))
                     n=max(sobel_im.getpixel((i,j-1)),sobel_im.getpixel((i,j-2)),sobel_im.getpixel((i,j-3)),sobel_im.getpixel((i,j-4)),sobel_im.getpixel((i,j-5)))
-                elif 112.5<=d<=157.5:
+                elif 120<=d<=158:
                     p=max(sobel_im.getpixel((i-1,j-1)),sobel_im.getpixel((i-2,j-2)),sobel_im.getpixel((i-3,j-3)),sobel_im.getpixel((i-4,j-4)),sobel_im.getpixel((i-5,j-5)))
                     n=max(sobel_im.getpixel((i+1,j+1)),sobel_im.getpixel((i+2,j+2)),sobel_im.getpixel((i+3,j+3)),sobel_im.getpixel((i+4,j+4)),sobel_im.getpixel((i+5,j+5)))
                 if not (sobel_im.getpixel((i,j))>=p and sobel_im.getpixel((i,j))>=n):
@@ -241,20 +242,21 @@ def nonMaximalSuppression_axis_blankform(imy,imx,sobel_im,directions):
             value=sobel_im.getpixel((i,j))
             if value >0:
                 d=directions[i][j]
-                if 0 <= d <= 22.5:
+                # I took this if else condition idea from  https://towardsdatascience.com/canny-edge-detection-step-by-step-in-python-computer-vision-b49c3a2d8123 
+                if 0 <= d <= 25:
                     p=max(sobel_im.getpixel((i-1,j)),sobel_im.getpixel((i-2,j)),sobel_im.getpixel((i-3,j)),sobel_im.getpixel((i-4,j)),sobel_im.getpixel((i-5,j)))
                     n=max(sobel_im.getpixel((i+1,j)),sobel_im.getpixel((i+2,j)),sobel_im.getpixel((i+3,j)),sobel_im.getpixel((i+4,j)),sobel_im.getpixel((i+5,j)))
                 elif  158 <= d<= 180:
                     p=max(sobel_im.getpixel((i,j-1)),sobel_im.getpixel((i,j-2)),sobel_im.getpixel((i,j-3)),sobel_im.getpixel((i,j-4)),sobel_im.getpixel((i,j-5)))
                     n=max(sobel_im.getpixel((i,j+1)),sobel_im.getpixel((i,j+2)),sobel_im.getpixel((i,j+3)),sobel_im.getpixel((i,j+4)),sobel_im.getpixel((i,j+5)))
 
-                elif 22.5<=d<=67.5:
+                elif 25<=d<=70:
                     p=max(sobel_im.getpixel((i+1,j-1)),sobel_im.getpixel((i+2,j-2)),sobel_im.getpixel((i+3,j-3)),sobel_im.getpixel((i+4,j-4)),sobel_im.getpixel((i+5,j-5)))
                     n=max(sobel_im.getpixel((i-1,j+1)),sobel_im.getpixel((i-2,j+2)),sobel_im.getpixel((i-3,j+3)),sobel_im.getpixel((i-4,j+4)),sobel_im.getpixel((i-5,j+5)))
-                elif 67.5<= d<= 112.5:
+                elif 70<= d<= 120:
                     p=max(sobel_im.getpixel((i,j+1)),sobel_im.getpixel((i,j+2)),sobel_im.getpixel((i,j+3)),sobel_im.getpixel((i,j+4)),sobel_im.getpixel((i,j+5)))
                     n=max(sobel_im.getpixel((i,j-1)),sobel_im.getpixel((i,j-2)),sobel_im.getpixel((i,j-3)),sobel_im.getpixel((i,j-4)),sobel_im.getpixel((i,j-5)))
-                elif 112.5<=d<=157.5:
+                elif 120<=d<=158:
                     p=max(sobel_im.getpixel((i-1,j-1)),sobel_im.getpixel((i-2,j-2)),sobel_im.getpixel((i-3,j-3)),sobel_im.getpixel((i-4,j-4)),sobel_im.getpixel((i-5,j-5)))
                     n=max(sobel_im.getpixel((i+1,j+1)),sobel_im.getpixel((i+2,j+2)),sobel_im.getpixel((i+3,j+3)),sobel_im.getpixel((i+4,j+4)),sobel_im.getpixel((i+5,j+5)))
                 if not (sobel_im.getpixel((i,j))>=p and sobel_im.getpixel((i,j))>=n):
