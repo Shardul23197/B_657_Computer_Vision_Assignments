@@ -1,5 +1,3 @@
-# a1
-
 #### Extract students's answer from scanned sheet
 
 We planned to draw horizontal and vertical lines using Hough transform, from these lines we are able to locate each question and its options and from this we can able get answers student chosen.
