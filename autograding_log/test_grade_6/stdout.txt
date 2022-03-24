@@ -1,0 +1,1 @@
+***** Running 'python3 grade.py a1_autograding_files/b-13.jpg a1_autograding_files/b-13_detected.txt' *****
