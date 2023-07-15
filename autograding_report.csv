@@ -1,0 +1,2 @@
+,teamname,commit hash,commit date,late submission?,test_extract_1,test_extract_2,test_extract_3,test_extract_4,test_extract_noisy_1,test_extract_noisy_2,test_extract_noisy_3,test_extract_noisy_4,test_grade_1,test_grade_2,test_grade_3,test_grade_4,test_grade_5,test_grade_6
+0,psanapal-sdabhane-ykodeboy,21d72e21b2483329557b7581a9fcad019179e466,2022-02-20 23:42:53-05:00,False,85,85,85,85,FAIL,FAIL,0,FAIL,84,85,85,30.5,85,85

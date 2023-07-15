@@ -1,0 +1,28 @@
+***** Running 'python3 inject.py a1_autograding_files/blank_form.jpg a1_autograding_files/c-33.txt a1_autograding_files/c-33_injected.png' *****
+***** Running 'python3 extract.py a1_autograding_files/c-33_injected.png a1_autograding_files/c-33_extracted.txt' *****
+Traceback (most recent call last):
+  File "extract.py", line 151, in <module>
+    extract(sys.argv[1],sys.argv[2])
+  File "extract.py", line 13, in extract
+    Hpoints,Vpoints = getHoughpoints(im)
+  File "/nfs/nfs7/home/skarukas/B657 Computer Vision/sp2022/autograding/a1-repos/psanapal-sdabhane-ykodeboy/grade.py", line 504, in getHoughpoints
+    canny_xresult,canny_yresult,canny_im=nonMaximalSuppression_axis_blankform(xresult,yresult,sobel_im,directions)
+  File "/nfs/nfs7/home/skarukas/B657 Computer Vision/sp2022/autograding/a1-repos/psanapal-sdabhane-ykodeboy/grade.py", line 226, in nonMaximalSuppression_axis_blankform
+    p=max(imx.getpixel((i,j+1)),imx.getpixel((i,j+2)),imx.getpixel((i,j+3)),imx.getpixel((i,j+4)),imx.getpixel((i,j+5)))
+  File "/usr/lib/python3/dist-packages/PIL/Image.py", line 1315, in getpixel
+    return self.im.getpixel(xy)
+IndexError: image index out of range
+***** Running 'python3 inject.py a1_autograding_files/blank_form.jpg a1_autograding_files/c-33.txt a1_autograding_files/c-33_injected.png' *****
+***** Running 'python3 extract.py a1_autograding_files/c-33_injected.png a1_autograding_files/c-33_extracted.txt' *****
+Traceback (most recent call last):
+  File "extract.py", line 151, in <module>
+    extract(sys.argv[1],sys.argv[2])
+  File "extract.py", line 13, in extract
+    Hpoints,Vpoints = getHoughpoints(im)
+  File "/nfs/nfs7/home/skarukas/B657 Computer Vision/sp2022/autograding/a1-repos/psanapal-sdabhane-ykodeboy/grade.py", line 504, in getHoughpoints
+    canny_xresult,canny_yresult,canny_im=nonMaximalSuppression_axis_blankform(xresult,yresult,sobel_im,directions)
+  File "/nfs/nfs7/home/skarukas/B657 Computer Vision/sp2022/autograding/a1-repos/psanapal-sdabhane-ykodeboy/grade.py", line 226, in nonMaximalSuppression_axis_blankform
+    p=max(imx.getpixel((i,j+1)),imx.getpixel((i,j+2)),imx.getpixel((i,j+3)),imx.getpixel((i,j+4)),imx.getpixel((i,j+5)))
+  File "/u/skarukas/.local/lib/python3.8/site-packages/PIL/Image.py", line 1411, in getpixel
+    return self.im.getpixel(xy)
+IndexError: image index out of range
