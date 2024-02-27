@@ -50,8 +50,7 @@ def read_detections(detection_file):
     detections = [set()] * NUM_QUESTIONS
 
     for line in open(detection_file, "r"):
-        line = line.strip()
-        if line == "":
+        if (line := line.strip()) == "":
             continue
 
         numchars = ""
