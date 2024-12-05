@@ -4,12 +4,9 @@ import sys
 from grade import *
 
 def inject(blanktext_name,answerstext_name,injectedimg_name):
-
-
-
-    ip = open(answerstext_name)
-    #print("ip : ",ip)
-    c = ip.read()
+    with open(answerstext_name) as ip:
+        #print("ip : ",ip)
+        c = ip.read()
     #print("c : ",c)
     arr = c.splitlines()
 
