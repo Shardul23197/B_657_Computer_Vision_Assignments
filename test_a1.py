@@ -9,6 +9,7 @@ import inspect
 from PIL import Image
 import numpy as np
 import re
+from security import safe_command
 
 
 LOG_DIR =  "autograding_log"
@@ -33,8 +34,7 @@ def run(test_name, time_limit_sec, argv):
     stderr.flush()
 
     try:
-        process = subprocess.run(
-            argv, 
+        process = safe_command.run(subprocess.run, argv, 
             stderr=stderr, stdout=stdout, 
             timeout=time_limit_sec
         )
